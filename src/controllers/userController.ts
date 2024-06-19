@@ -43,6 +43,8 @@ export class UserController {
     }
 
     static async updateUser(req: Request, res: Response) {
+        console.log(req.body);
+        
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const validationErrors = errors.array().map(err => ({

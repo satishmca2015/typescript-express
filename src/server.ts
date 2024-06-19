@@ -5,12 +5,15 @@ import userRoutes from './routes/users';
 import reportRoutes from './routes/reports';
 import sequelize from './config/sequelize';
 import { paginate } from './middleware/paginationMiddleware';
+import multer from 'multer';
 
 const app = express();
+const upload = multer();
 dotenv.config();
 const PORT = process.env.PORT;
 
 app.use(express.json());
+app.use(upload.any());
 app.use(paginate);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);

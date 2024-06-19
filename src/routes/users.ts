@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.get('/', authenticateJWT, UserController.getUser);
 router.get('/:id', authenticateJWT, UserController.getUserById);
-router.patch('/:id', authenticateJWT, validateupdateUser, UserController.updateUser);
+router.post('/:id', authenticateJWT, validateupdateUser, UserController.updateUser);
 
 export default router;
