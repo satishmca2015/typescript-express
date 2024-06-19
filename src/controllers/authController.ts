@@ -8,9 +8,9 @@ import { generateToken } from "../utils/jwt";
 
 const authService = new AuthService();
 
-export class AuthController{
- 
-    static async createUser(req:Request, res: Response) {
+export class AuthController {
+
+    static async createUser(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const validationErrors = errors.array().map(err => ({
@@ -36,16 +36,16 @@ export class AuthController{
             return sendResponse(res, statusCode.BAD_REQUEST, validationErrors, responseMessage.validationFailed);
         }
         try {
-          const { email, password } = req.body;
-          const user = await authService.signIn(email, password);
-          const token = generateToken({ id: user.id, email: user.email });
-          return sendResponse(res, statusCode.OK, { user, token }, 'Login successful');
+            const { email, password } = req.body;
+            const user = await authService.signIn(email, password);
+            const token = generateToken({ id: user.id, email: user.email });
+            return sendResponse(res, statusCode.OK, { user, token }, 'Login successful');
         } catch (error: any) {
-          return sendResponse(res, statusCode.BAD_REQUEST, null, error.message);
+            return sendResponse(res, statusCode.BAD_REQUEST, null, error.message);
         }
-      }
+    }
 
-    
+
 
 
 }

@@ -7,29 +7,29 @@ import sequelize from '../config/sequelize';
 import { sendResponse } from '../utils/responseHandler';
 import { responseMessage } from '../constant/responseMessage';
 
+// Define a custom interface for the pagination options
+interface PaginationOptions {
+    page: number;
+    limit: number;
+  }
+  
+  // Augment the existing Request type with the pagination property
+  declare module 'express-serve-static-core' {
+    interface Request {
+      pagination?: PaginationOptions;
+    }
+  }
+
 const userService = new UserService();
 
 export class UserController {
-    // static async createUser(req: Request, res: Response) {
-    //     const errors = validationResult(req);
-    //     if (!errors.isEmpty()) {
-    //         const validationErrors = errors.array().map(err => ({
-    //             message: err.msg
-    //         }));
-    //         return sendResponse(res, statusCode.BAD_REQUEST, validationErrors, responseMessage.validationFailed);
-    //     }
-    //     try {
-    //         const { username, email, password } = req.body;
-    //         const user = await userService.createUser(username, email, password);
-    //         return sendResponse(res, statusCode.CREATED, user, responseMessage.userCreated);
-    //     } catch (error: any) {
-    //         return sendResponse(res, statusCode.BAD_REQUEST, { message: error.message }, 'Error in creation');
-    //     }
-    // }
-
+    
     static async getUser(req: Request, res: Response) {
+        const { page, limit } = req.pagination as PaginationOptions;
         try {
-            const [users, metadata] = await sequelize.query('SELECT id,username,email FROM users');
+            //const [users, metadata] = await sequelize.query('SELECT id,username,email FROM users');
+            const users = await userService.getUsers(page,limit);
+            
             return sendResponse(res,statusCode.OK,users,'User list');
         } catch (error: any) {
             return sendResponse(res,statusCode.BAD_REQUEST,error,'failed to fetched');
@@ -41,7 +41,7 @@ export class UserController {
         try {
             const user = await userService.getUserById(id);
             if (!user) {
-                return sendResponse(res, statusCode.NOT_FOUND, null, 'User not found');
+                return sendResponse(res, statusCode.NOT_FOUND, [], 'User not found');
             }
             // return res.status(statusCode.OK).json(user);
             return sendResponse(res, statusCode.OK, user, 'User list');
@@ -56,13 +56,12 @@ export class UserController {
             const validationErrors = errors.array().map(err => ({
                 message: err.msg
             }));
-            //return res.status(statusCode.BAD_REQUEST).json({ status: 'failed', errors: validationErrors });
             return sendResponse(res, statusCode.BAD_REQUEST, validationErrors, 'Validation failed');
         }
         try {
             const updated = await userService.updateUser(req.params.id, req.body);
             if (!updated) throw new Error('Unable to update details');
-            return sendResponse(res, statusCode.OK,null ,'Updated successfully!');
+            return sendResponse(res, statusCode.OK,[] ,'Updated successfully!');
         } catch (error: any) {
             return sendResponse(res, statusCode.BAD_REQUEST, error.message);
         }

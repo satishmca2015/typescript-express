@@ -13,6 +13,12 @@ export class UserService {
         }
     }
 
+    async getUsers(page:number,limit:number){
+        const offset = (page - 1) * limit;
+        const queryOptions = { offset,limit };
+        return await User.findAll(queryOptions);
+    }
+
     async updateUser(id: string, body: object) {
         try {
             const where = { where: { id: id } };
