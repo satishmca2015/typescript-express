@@ -1,7 +1,7 @@
 import User from '../models/User';
 
 export class UserService {
-    constructor() {}
+    constructor() { }
 
     async getUserById(id: string) {
         try {
@@ -13,10 +13,14 @@ export class UserService {
         }
     }
 
-    async getUsers(page:number,limit:number){
-        const offset = (page - 1) * limit;
-        const queryOptions = { offset,limit };
-        return await User.findAll(queryOptions);
+    async getUsers(page: number, limit: number) {
+        try {
+            const offset = (page - 1) * limit;
+            const queryOptions = { offset, limit };
+            return await User.findAll(queryOptions);
+        } catch (error: any) {
+            throw error;
+        }
     }
 
     async updateUser(id: string, body: object) {

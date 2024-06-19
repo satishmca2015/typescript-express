@@ -7,32 +7,24 @@ import sequelize from '../config/sequelize';
 import { sendResponse } from '../utils/responseHandler';
 import { responseMessage } from '../constant/responseMessage';
 
+const userService = new UserService();
+
 // Define a custom interface for the pagination options
 interface PaginationOptions {
     page: number;
     limit: number;
-  }
-  
-  // Augment the existing Request type with the pagination property
-  declare module 'express-serve-static-core' {
-    interface Request {
-      pagination?: PaginationOptions;
-    }
-  }
-
-const userService = new UserService();
-
+}
 export class UserController {
-    
+
     static async getUser(req: Request, res: Response) {
         const { page, limit } = req.pagination as PaginationOptions;
         try {
             //const [users, metadata] = await sequelize.query('SELECT id,username,email FROM users');
-            const users = await userService.getUsers(page,limit);
-            
-            return sendResponse(res,statusCode.OK,users,'User list');
+            const users = await userService.getUsers(page, limit);
+
+            return sendResponse(res, statusCode.OK, users, 'User list');
         } catch (error: any) {
-            return sendResponse(res,statusCode.BAD_REQUEST,error,'failed to fetched');
+            return sendResponse(res, statusCode.BAD_REQUEST, error, 'failed to fetched');
         }
     }
 
@@ -61,7 +53,7 @@ export class UserController {
         try {
             const updated = await userService.updateUser(req.params.id, req.body);
             if (!updated) throw new Error('Unable to update details');
-            return sendResponse(res, statusCode.OK,[] ,'Updated successfully!');
+            return sendResponse(res, statusCode.OK, [], 'Updated successfully!');
         } catch (error: any) {
             return sendResponse(res, statusCode.BAD_REQUEST, error.message);
         }
