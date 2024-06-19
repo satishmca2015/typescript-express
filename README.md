@@ -66,12 +66,12 @@ The server will start at `http://localhost:3000` by default. You can configure t
 
 ## Endpoints
 
-- **POST /auth/signup**: Register a new user
-- **POST /auth/signin**: Login with credentials to get JWT token
-- **GET /user**: Get all users
-- **GET /user/:id**: Get user by ID
-- **PUT /user/:id**: Update user details
-- **DELETE /user/:id**: Delete user by ID
+- **POST /api/auth/signup**: Register a new user
+- **POST /api/auth/signin**: Login with credentials to get JWT token
+- **GET /api/users**: Get all users
+- **GET /api/users/:id**: Get user by ID
+- **PUT /api/users/:id**: Update user details
+- **DELETE /api/users/:id**: Delete user by ID
 - _(Add more endpoints as needed)_
 
 ## Contributing
