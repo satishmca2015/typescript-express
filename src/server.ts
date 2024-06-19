@@ -12,9 +12,9 @@ const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(paginate);
-app.use('/auth', authRoutes);
-app.use('/user', userRoutes);
-app.use('/report', reportRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/report', reportRoutes);
 
 // Sync database models with the database
 /* sequelize.sync({ force: true }).then(() => {
